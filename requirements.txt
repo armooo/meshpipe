@@ -1,0 +1,6 @@
+bleak==0.22.1
+dbus-fast==2.21.3
+protobuf==5.27.0
+pyserial==3.5
+pyserial-asyncio==0.6
+typing_extensions==4.12.0

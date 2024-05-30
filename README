@@ -1,0 +1,35 @@
+This is a program to slurp packets out of one radio and chuck them out another.
+
+To use this you need to enable MQTT uplink on the source radios. It requires
+encryption to be disabled and proxy to client enabled.
+
+The destination radios need to have a patched firmware to allow forging the
+from field on packets.
+
+```
+diff --git a/src/mesh/MeshService.cpp b/src/mesh/MeshService.cpp
+index 2cfb4843..78322c35 100644
+--- a/src/mesh/MeshService.cpp
++++ b/src/mesh/MeshService.cpp
+@@ -192,7 +192,7 @@ void MeshService::handleToRadio(meshtastic_MeshPacket &p)
+         return;
+     }
+ #endif
+-    p.from = 0; // We don't let phones assign nodenums to their sent messages
++    //p.from = 0; // We don't let phones assign nodenums to their sent messages
+ 
+     if (p.id == 0)
+         p.id = generatePacketId(); // If the phone didn't supply one, then pick one
+```
+
+```
+usage: meshview [-h] [--bt [BT ...]] [--tcp [TCP ...]]
+
+options:
+  -h, --help       show this help message and exit
+  --bt [BT ...]
+  --tcp [TCP ...]
+```
+
+
+So this will link a bluetooth radio to one over TCP.  `python pipe.py --bt adev_0060 --tcp 192.168.10.145`
